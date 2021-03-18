@@ -2,26 +2,25 @@ package com.example.medtracker
 
 import Activity
 import History
-import Home
+import HeartRateIndicator
 import Settings
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import com.google.android.material.bottomnavigation.BottomNavigationView
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(R.layout.activity_main) {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
 
-        val homeFragment = Home()
+        val homeFragment = HeartRateIndicator()
         val activityFragment = Activity()
         val historyFragment = History()
         val settingsFragment = Settings()
 
         setCurrentFragment(homeFragment)
 
-        val bottomNavigationView :BottomNavigationView = findViewById(R.id.bottomNavigationView);
+        val bottomNavigationView :BottomNavigationView = findViewById(R.id.bottomNavigationView)
 
         bottomNavigationView.setOnNavigationItemSelectedListener {
             when(it.itemId){
