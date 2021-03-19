@@ -1,29 +1,40 @@
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import com.example.medtracker.R
+import com.jjoe64.graphview.GraphView
+import com.jjoe64.graphview.series.DataPoint
+import com.jjoe64.graphview.series.LineGraphSeries
+import java.util.*
 import kotlin.random.Random
+
 
 class HeartRateIndicator:Fragment(R.layout.fragment_hr) {
 
     var hr = 90 // heart rate
     private val random = Random(2)
+    private var inc = 1
+
+    var series = LineGraphSeries(arrayOf<DataPoint>(
+    ))
+
 
     lateinit var mainHandler: Handler
 
     private lateinit var progressText: TextView
     private lateinit var progressValue: ProgressBar
 
-    private val updateHRTask = object: Runnable {
+    private lateinit var graph: GraphView
+
+        private val updateHRTask = object: Runnable {
         override fun run() {
             changeHeartRate()
-            mainHandler.postDelayed(this, 300)
+            updateGraph()
+            mainHandler.postDelayed(this, 1000)
         }
     }
 
@@ -31,6 +42,15 @@ class HeartRateIndicator:Fragment(R.layout.fragment_hr) {
         super.onViewCreated(view, savedInstanceState)
         progressText = view.findViewById<TextView>(R.id.text_view_progress)
         progressValue = view.findViewById<ProgressBar>(R.id.progress_bar)
+        graph = view.findViewById<GraphView>(R.id.graph)
+
+        graph.addSeries(series)
+        graph.viewport.isScalable = true
+        graph.viewport.isScrollable = true
+        graph.viewport.setMinX(0.0)
+        graph.viewport.setMaxX(60.0)
+        graph.title = "Last minute HR"
+
 
         mainHandler = Handler(Looper.getMainLooper())
     }
@@ -46,12 +66,16 @@ class HeartRateIndicator:Fragment(R.layout.fragment_hr) {
     }
 
     fun changeHeartRate() {
-        if (random.nextInt(0,2) == 1)
-            hr -= random.nextInt(1,10)
+        if (random.nextInt(0, 2) == 1)
+            hr -= random.nextInt(1, 10)
         else
-            hr += random.nextInt(1,10)
+            hr += random.nextInt(1, 10)
 
         progressText.text = hr.toString()
         progressValue.progress = hr
+    }
+
+    private fun updateGraph(){
+        series.appendData(DataPoint(inc++.toDouble(), hr.toDouble()), true, 60)
     }
 }
