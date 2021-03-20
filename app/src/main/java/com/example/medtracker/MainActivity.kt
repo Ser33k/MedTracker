@@ -11,6 +11,7 @@ import android.content.pm.PackageManager
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.view.View
 import android.widget.Toast
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
@@ -53,6 +54,15 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
             true
         }
 
+    }
+
+    private fun setCurrentFragment(fragment: Fragment) =
+        supportFragmentManager.beginTransaction().apply {
+            replace(R.id.flFragment, fragment)
+            commit()
+        }
+
+    fun toggleBLE(view: View) {
         // Use this check to determine whether BLE is supported on the device.
         // If not, we can selectively disable BLE-related features.
         if(!packageManager.hasSystemFeature(PackageManager.FEATURE_BLUETOOTH_LE)) {
@@ -67,14 +77,5 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
                 requestBLE.launch(Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE))
             }
         }
-
     }
-
-
-
-    private fun setCurrentFragment(fragment: Fragment) =
-        supportFragmentManager.beginTransaction().apply {
-            replace(R.id.flFragment, fragment)
-            commit()
-        }
 }
