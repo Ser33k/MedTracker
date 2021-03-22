@@ -164,6 +164,9 @@ class DeviceScanActivity : AppCompatActivity() {
                 scanLeDevice(true)
             }
             R.id.menu_stop -> scanLeDevice(false)
+            R.id.menu_skip -> {
+                startActivity(Intent(this, MainActivity::class.java))
+            }
         }
         return true
     }

@@ -190,6 +190,9 @@ class DeviceControlActivity : AppCompatActivity() {
                 onBackPressed()
                 return true
             }
+            R.id.menu_skip2 -> {
+                startActivity(Intent(this, MainActivity::class.java))
+            }
         }
         return super.onOptionsItemSelected(item)
     }
