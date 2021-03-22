@@ -3,20 +3,24 @@ package com.example.medtracker
 import Activity
 import History
 import HeartRateIndicator
-import Settings
+import SettingsFragment
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
+import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.preference.Preference
+import androidx.preference.PreferenceFragmentCompat
 import com.google.android.material.bottomnavigation.BottomNavigationView
 
-class MainActivity : AppCompatActivity(R.layout.activity_main) {
+class MainActivity : AppCompatActivity(R.layout.activity_main), PreferenceFragmentCompat.OnPreferenceStartFragmentCallback {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         val homeFragment = HeartRateIndicator()
         val activityFragment = Activity()
         val historyFragment = History()
-        val settingsFragment = Settings()
+        val settingsFragment = SettingsFragment()
 
         setCurrentFragment(homeFragment)
 
@@ -42,4 +46,28 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
             replace(R.id.flFragment, fragment)
             commit()
         }
+
+    override fun onPreferenceStartFragment(caller: PreferenceFragmentCompat?, pref: Preference): Boolean {
+        // Instantiate the new Fragment
+        val args: Bundle = pref.extras
+        val fragment = supportFragmentManager.fragmentFactory.instantiate(
+            classLoader,
+            pref.fragment)
+        fragment.arguments = args
+
+        supportFragmentManager.setFragmentResultListener("ACCOUNT", this, { requestKey, result ->
+            if (requestKey == "ACCOUNT") {
+                // Get result from bundle
+                Log.d("MainActivity", result["name"] as String)
+                Toast.makeText(this,result["name"] as String, Toast.LENGTH_SHORT).show()
+            }
+        })
+
+        // Replace the existing Fragment with the new Fragment
+        supportFragmentManager.beginTransaction()
+            .replace(R.id.flFragment, fragment)
+            .addToBackStack(null)
+            .commit()
+        return true
+    }
 }
