@@ -55,13 +55,13 @@ class MainActivity : AppCompatActivity(R.layout.activity_main), PreferenceFragme
             pref.fragment)
         fragment.arguments = args
 
-        supportFragmentManager.setFragmentResultListener("ACCOUNT", this, { requestKey, result ->
-            if (requestKey == "ACCOUNT") {
-                // Get result from bundle
-                Log.d("MainActivity", result["name"] as String)
-                Toast.makeText(this,result["name"] as String, Toast.LENGTH_SHORT).show()
-            }
-        })
+//        supportFragmentManager.setFragmentResultListener("ACCOUNT", this, { requestKey, result ->
+//            if (requestKey == "ACCOUNT") {
+//                // Get result from bundle
+//                Log.d("MainActivity", result["name"] as String)
+//                Toast.makeText(this,result["name"] as String, Toast.LENGTH_SHORT).show()
+//            }
+//        })
 
         // Replace the existing Fragment with the new Fragment
         supportFragmentManager.beginTransaction()
