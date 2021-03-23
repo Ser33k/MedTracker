@@ -1,6 +1,6 @@
 package com.example.medtracker
 
-import Activity
+
 import History
 import HeartRateIndicator
 import SettingsFragment
@@ -18,7 +18,7 @@ class MainActivity : AppCompatActivity(R.layout.activity_main), PreferenceFragme
         super.onCreate(savedInstanceState)
 
         val homeFragment = HeartRateIndicator()
-        val activityFragment = Activity()
+        val activityFragment = ActivityFragment()
         val historyFragment = History()
         val settingsFragment = SettingsFragment()
 
