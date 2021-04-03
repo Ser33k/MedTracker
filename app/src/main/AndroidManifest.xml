@@ -23,6 +23,13 @@
             android:theme="@style/Theme.MaterialComponents.DayNight.NoActionBar">
 <!--            android:theme="@style/Theme.MedTracker">-->
 
+        <meta-data
+            android:name="com.google.android.gms.version"
+            android:value="@integer/google_play_services_version" />
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyCAPr5HSXXfLQJ2jl1W0nDsD1iWHu3GPv8" />
+
         <activity android:name=".DeviceControlActivity"/>
 
         <activity android:name=".DeviceScanActivity">
