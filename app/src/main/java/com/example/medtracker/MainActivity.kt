@@ -1,25 +1,24 @@
 package com.example.medtracker
 
 
-import History
-import HeartRateIndicator
-import SettingsFragment
+import com.example.medtracker.fragment.HistoryFragment
+import com.example.medtracker.fragment.HeartRateFragment
+import com.example.medtracker.fragment.SettingsFragment
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
+import com.example.medtracker.fragment.ActivityFragment
 import com.google.android.material.bottomnavigation.BottomNavigationView
 
 class MainActivity : AppCompatActivity(R.layout.activity_main), PreferenceFragmentCompat.OnPreferenceStartFragmentCallback {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        val homeFragment = HeartRateIndicator()
+        val homeFragment = HeartRateFragment()
         val activityFragment = ActivityFragment()
-        val historyFragment = History()
+        val historyFragment = HistoryFragment()
         val settingsFragment = SettingsFragment()
 
         setCurrentFragment(homeFragment)
