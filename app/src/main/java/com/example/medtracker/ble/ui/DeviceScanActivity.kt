@@ -28,8 +28,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.medtracker.MainActivity
 import com.example.medtracker.R
-import kotlinx.android.synthetic.main.activity_device_scan.*
-
 
 /**
  * Activity for scanning and displaying available Bluetooth LE devices.
@@ -40,6 +38,7 @@ class DeviceScanActivity : AppCompatActivity() {
     private var mScanning: Boolean = false
     private var mBluetoothLeScanner: BluetoothLeScanner? = null
     private var mHandler: Handler? = null
+    private var rvDevices: RecyclerView? = null
 
     private val requestBluetooth = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result: ActivityResult ->
         if (result.resultCode == RESULT_CANCELED) {
@@ -57,13 +56,13 @@ class DeviceScanActivity : AppCompatActivity() {
         setSupportActionBar(findViewById(R.id.my_toolbar))
         supportActionBar!!.setTitle(R.string.title_devices)
 
-        val rvDevices = findViewById<View>(R.id.rvDevices) as RecyclerView
+        rvDevices = findViewById<View>(R.id.rvDevices) as RecyclerView
         mLeDeviceListAdapter = LeDeviceListAdapter()
 
-        rvDevices.adapter = mLeDeviceListAdapter
-        rvDevices.layoutManager = LinearLayoutManager(this)
+        rvDevices!!.adapter = mLeDeviceListAdapter
+        rvDevices!!.layoutManager = LinearLayoutManager(this)
 
-        rvDevices.addOnItemClickListener(object: OnItemClickListener {
+        rvDevices!!.addOnItemClickListener(object: OnItemClickListener {
             override fun onItemClicked(position: Int, view: View) {
                 val device = mLeDeviceListAdapter!!.getDevice(position) ?: return
                 val intent = Intent(this@DeviceScanActivity, DeviceControlActivity::class.java)
@@ -188,7 +187,7 @@ class DeviceScanActivity : AppCompatActivity() {
 
         // Initializes list view adapter.
         mLeDeviceListAdapter = LeDeviceListAdapter()
-        rvDevices.adapter = mLeDeviceListAdapter
+        rvDevices?.adapter = mLeDeviceListAdapter
         scanLeDevice(true)
     }
 
