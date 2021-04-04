@@ -1,10 +1,10 @@
-package com.example.medtracker
+package com.example.medtracker.fragment
 
 import android.os.Bundle
 import androidx.core.os.bundleOf
 import androidx.fragment.app.setFragmentResult
-import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
+import com.example.medtracker.R
 
 class AccountFragment : PreferenceFragmentCompat() {
 

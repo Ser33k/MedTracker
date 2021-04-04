@@ -1,10 +1,9 @@
-package com.example.medtracker.ble
+package com.example.medtracker.ble.ui
 
 import android.bluetooth.BluetoothDevice
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.AdapterView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.medtracker.R
@@ -16,11 +15,11 @@ class LeDeviceListAdapter : RecyclerView.Adapter<LeDeviceListAdapter.ViewHolder>
     inner class ViewHolder(listItemView: View) : RecyclerView.ViewHolder(listItemView) {
         // Your holder should contain and initialize a member variable
         // for any view that will be set as you render a row
-        val deviceName: TextView = itemView.findViewById<TextView>(R.id.device_name)
-        val deviceAddress: TextView = itemView.findViewById<TextView>(R.id.device_address)
+        val deviceName: TextView = itemView.findViewById(R.id.device_name)
+        val deviceAddress: TextView = itemView.findViewById(R.id.device_address)
     }
 
-    private val mLeDevices: ArrayList<BluetoothDevice> = ArrayList<BluetoothDevice>()
+    private val mLeDevices: ArrayList<BluetoothDevice> = ArrayList()
 
     fun addDevice(device:  BluetoothDevice) {
         if (!mLeDevices.contains(device)) {
@@ -37,7 +36,7 @@ class LeDeviceListAdapter : RecyclerView.Adapter<LeDeviceListAdapter.ViewHolder>
     }
 
     // Usually involves inflating a layout from XML and returning the holder
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): LeDeviceListAdapter.ViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val context = parent.context
         val inflater = LayoutInflater.from(context)
         // Inflate the custom layout
@@ -47,7 +46,7 @@ class LeDeviceListAdapter : RecyclerView.Adapter<LeDeviceListAdapter.ViewHolder>
     }
 
     // Involves populating data into the item through holder
-    override fun onBindViewHolder(holder: LeDeviceListAdapter.ViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         // Get the data model based on position
         val device: BluetoothDevice = mLeDevices[position]
         // Set item views based on your views and data model

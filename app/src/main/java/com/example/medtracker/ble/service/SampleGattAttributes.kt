@@ -1,4 +1,4 @@
-package com.example.medtracker.ble
+package com.example.medtracker.ble.service
 
 import java.util.HashMap
 

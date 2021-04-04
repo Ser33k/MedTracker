@@ -1,8 +1,9 @@
-package com.example.medtracker
+package com.example.medtracker.fragment
 
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.Fragment
+import com.example.medtracker.R
 import com.google.android.gms.maps.*
 import com.google.android.gms.maps.model.MarkerOptions
 

@@ -1,3 +1,5 @@
+package com.example.medtracker.fragment
+
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
@@ -13,7 +15,7 @@ import java.util.*
 import kotlin.random.Random
 
 
-class HeartRateIndicator:Fragment(R.layout.fragment_hr) {
+class HeartRateFragment:Fragment(R.layout.fragment_hr) {
 
     var hr = 90 // heart rate
     private val random = Random(2)

@@ -1,4 +1,4 @@
-package com.example.medtracker.ble
+package com.example.medtracker.ble.service
 
 import android.app.Service
 import android.bluetooth.BluetoothAdapter

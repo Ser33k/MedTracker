@@ -1,4 +1,4 @@
-package com.example.medtracker
+package com.example.medtracker.ble.ui
 
 import android.Manifest
 import android.app.AlertDialog
@@ -26,7 +26,8 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.medtracker.ble.LeDeviceListAdapter
+import com.example.medtracker.MainActivity
+import com.example.medtracker.R
 import kotlinx.android.synthetic.main.activity_device_scan.*
 
 
@@ -130,7 +131,8 @@ class DeviceScanActivity : AppCompatActivity() {
             menu.findItem(R.id.menu_stop).isVisible = true
             menu.findItem(R.id.menu_scan).isVisible = false
             menu.findItem(R.id.menu_refresh).setActionView(
-                R.layout.actionbar_indeterminate_progress)
+                R.layout.actionbar_indeterminate_progress
+            )
         }
         return true
     }
@@ -139,6 +141,7 @@ class DeviceScanActivity : AppCompatActivity() {
     override fun onRequestPermissionsResult(requestCode: Int,
                                             permissions: Array<String>,
                                             grantResults: IntArray) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         when (requestCode) {
             PERMISSION_REQUEST_COARSE_LOCATION -> {
                 if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {

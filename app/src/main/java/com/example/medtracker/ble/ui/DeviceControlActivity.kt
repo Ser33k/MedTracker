@@ -1,4 +1,4 @@
-package com.example.medtracker
+package com.example.medtracker.ble.ui
 
 import android.bluetooth.BluetoothGattCharacteristic
 import android.bluetooth.BluetoothGattService
@@ -12,8 +12,10 @@ import android.widget.ExpandableListView
 import android.widget.SimpleExpandableListAdapter
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
-import com.example.medtracker.ble.BluetoothLeService
-import com.example.medtracker.ble.SampleGattAttributes
+import com.example.medtracker.MainActivity
+import com.example.medtracker.R
+import com.example.medtracker.ble.service.BluetoothLeService
+import com.example.medtracker.ble.service.SampleGattAttributes
 import java.util.*
 
 /**
