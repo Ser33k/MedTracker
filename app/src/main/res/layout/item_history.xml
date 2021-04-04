@@ -19,7 +19,7 @@
         android:textColor="@color/black"/>
 
     <TextView
-        android:id="@+id/minHr"
+        android:id="@+id/hrValue"
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_weight="1"
@@ -27,16 +27,5 @@
         android:textAlignment="center"
         android:textSize="25sp"
         android:textColor="@color/black"/>
-
-    <TextView
-        android:id="@+id/maxHr"
-        android:layout_width="0dp"
-        android:layout_height="match_parent"
-        android:layout_weight="1"
-        android:gravity="center"
-        android:textAlignment="center"
-        android:textSize="25sp"
-        android:textColor="@color/black"/>
-
 
 </LinearLayout>
