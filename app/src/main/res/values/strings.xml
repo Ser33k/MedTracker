@@ -36,4 +36,11 @@
     <string name="attachment_summary_on">Automatically download attachments for incoming emails</string>
     <string name="attachment_summary_off">Only download attachments when manually requested</string>
     <string name="menu_skip">Skip</string>
+    <string name="title_activity_main2">MainActivity2</string>
+
+    <!-- Bottom navigation-->
+    <string name="hr_route">HR</string>
+    <string name="run_route">Run</string>
+    <string name="stats_route">Stats</string>
+    <string name="account_route">Account</string>
 </resources>
