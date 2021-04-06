@@ -1,4 +1,4 @@
-package com.example.medtracker
+package com.example.medtracker.ui
 
 import androidx.annotation.StringRes
 import androidx.compose.material.*
@@ -9,9 +9,8 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.*
+import com.example.medtracker.R
 import com.example.medtracker.data.viewmodel.HeartRateViewModel
-import com.example.medtracker.fragment.HistoryScreen
-import com.example.medtracker.run.CityMapView
 
 
 sealed class BottomNavigationScreens(val route: String, @StringRes val resourceId: Int, val icon: ImageVector) {
@@ -55,7 +54,8 @@ private fun MainScreenNavigationConfigurations(
 ) {
     NavHost(navController, startDestination = BottomNavigationScreens.HR.route) {
         composable(BottomNavigationScreens.HR.route) {
-            MedTrackerScreen(ScreenContent.HR)
+//            MedTrackerScreen(ScreenContent.HR)
+            HeartRateScreen()
         }
         composable(BottomNavigationScreens.Run.route) {
 //            MedTrackerScreen(ScreenContent.Run)
@@ -63,7 +63,7 @@ private fun MainScreenNavigationConfigurations(
         }
         composable(BottomNavigationScreens.Stats.route) {
 //            MedTrackerScreen(ScreenContent.Stats)
-            HistoryScreen(heartRateViewModel = heartRateViewModel)
+            StatsScreen(heartRateViewModel = heartRateViewModel)
         }
         composable(BottomNavigationScreens.Account.route) {
             MedTrackerScreen(ScreenContent.Account)

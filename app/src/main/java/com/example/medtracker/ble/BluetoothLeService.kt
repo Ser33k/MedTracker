@@ -1,4 +1,4 @@
-package com.example.medtracker.ble.service
+package com.example.medtracker.ble
 
 import android.app.Service
 import android.bluetooth.BluetoothAdapter
@@ -85,7 +85,7 @@ class BluetoothLeService : Service() {
         // http://developer.bluetooth.org/gatt/characteristics/Pages/CharacteristicViewer.aspx?u=org.bluetooth.characteristic.heart_rate_measurement.xml
         if (UUID_HEART_RATE_MEASUREMENT == characteristic.uuid) {
             val flag = characteristic.properties
-            var format: Int
+            val format: Int
             if (flag and 0x01 != 0) {
                 format = BluetoothGattCharacteristic.FORMAT_UINT16
                 Log.d(TAG, "Heart rate format UINT16.")

@@ -55,6 +55,10 @@ dependencies {
 
     // Graph library
     implementation 'com.jjoe64:graphview:4.2.2'
+    // Replacement for graph library
+    implementation 'com.github.tehras.charts:common:beta-01'
+    implementation 'com.github.tehras.charts:line:beta-01'
+
     // Google Maps services
     implementation 'com.google.android.gms:play-services-maps:17.0.0'
     implementation 'com.google.maps.android:maps-ktx:2.3.0'
