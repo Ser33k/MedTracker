@@ -18,6 +18,7 @@ sealed class BottomNavigationScreens(val route: String, @StringRes val resourceI
     object Run : BottomNavigationScreens("Run", R.string.run_route, Icons.Filled.VolunteerActivism)
     object Stats : BottomNavigationScreens("Stats", R.string.stats_route, Icons.Filled.History)
     object Account : BottomNavigationScreens("Account", R.string.account_route, Icons.Filled.Settings)
+    object Timer : BottomNavigationScreens("Timer", R.string.timer_route ,Icons.Filled.DirectionsRun)
 }
 
 sealed class ScreenContent(val word: String){
@@ -35,6 +36,7 @@ fun MainScreen(heartRateViewModel: HeartRateViewModel) {
     val bottomNavigationItems = listOf(
         BottomNavigationScreens.HR,
         BottomNavigationScreens.Run,
+        BottomNavigationScreens.Timer,
         BottomNavigationScreens.Stats,
         BottomNavigationScreens.Account
     )
@@ -67,6 +69,9 @@ private fun MainScreenNavigationConfigurations(
         }
         composable(BottomNavigationScreens.Account.route) {
             MedTrackerScreen(ScreenContent.Account)
+        }
+        composable(BottomNavigationScreens.Timer.route) {
+            TimerScreen()
         }
     }
 }
