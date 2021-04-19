@@ -56,15 +56,12 @@ private fun MainScreenNavigationConfigurations(
 ) {
     NavHost(navController, startDestination = BottomNavigationScreens.HR.route) {
         composable(BottomNavigationScreens.HR.route) {
-//            MedTrackerScreen(ScreenContent.HR)
             HeartRateScreen()
         }
         composable(BottomNavigationScreens.Run.route) {
-//            MedTrackerScreen(ScreenContent.Run)
-            CityMapView(latitude = "51.075103", longitude = "16.992012" )
+            ActivityScreen()
         }
         composable(BottomNavigationScreens.Stats.route) {
-//            MedTrackerScreen(ScreenContent.Stats)
             StatsScreen(heartRateViewModel = heartRateViewModel)
         }
         composable(BottomNavigationScreens.Account.route) {
