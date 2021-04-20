@@ -1,4 +1,4 @@
-package com.example.medtracker.ui
+package com.example.medtracker.ui.screen
 
 import android.bluetooth.BluetoothDevice
 import androidx.compose.foundation.layout.Row

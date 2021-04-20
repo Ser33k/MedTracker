@@ -1,15 +1,16 @@
-package com.example.medtracker.ui
+package com.example.medtracker.data.viewmodel
 
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
+import androidx.lifecycle.ViewModel
 import com.github.tehras.charts.line.LineChartData
 import com.github.tehras.charts.line.renderer.point.FilledCircularPointDrawer
 import com.github.tehras.charts.line.renderer.point.HollowCircularPointDrawer
 import com.github.tehras.charts.line.renderer.point.NoPointDrawer
 import com.github.tehras.charts.line.renderer.point.PointDrawer
 
-class LineChartDataModel {
+class LineChartDataModel : ViewModel() {
     var lineChartData by mutableStateOf(
         LineChartData(
             points = listOf(

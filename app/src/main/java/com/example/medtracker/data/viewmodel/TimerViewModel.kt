@@ -1,4 +1,4 @@
-package com.example.medtracker.ui
+package com.example.medtracker.data.viewmodel
 
 import android.os.Handler
 import android.os.Looper

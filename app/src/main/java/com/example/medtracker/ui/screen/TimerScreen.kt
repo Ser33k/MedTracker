@@ -1,4 +1,4 @@
-package com.example.medtracker.ui
+package com.example.medtracker.ui.screen
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.Icon
@@ -17,6 +17,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.medtracker.data.viewmodel.TimerViewModel
 import java.util.*
 
 @Composable

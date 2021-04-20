@@ -27,7 +27,7 @@ import com.example.medtracker.ble.BluetoothLeService
 import com.example.medtracker.ble.SampleGattAttributes
 import com.example.medtracker.data.viewmodel.HeartRateViewModel
 import com.example.medtracker.data.viewmodel.HeartRateViewModelFactory
-import com.example.medtracker.ui.MainScreen
+import com.example.medtracker.ui.screen.MainScreen
 import com.example.medtracker.ui.theme.MedTrackerTheme
 import java.util.ArrayList
 import java.util.HashMap

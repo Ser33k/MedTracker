@@ -1,4 +1,4 @@
-package com.example.medtracker.ui
+package com.example.medtracker.ui.screen
 
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.material.CircularProgressIndicator
@@ -24,6 +24,7 @@ import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.medtracker.data.viewmodel.LineChartDataModel
 import com.example.medtracker.ui.theme.Margins.horizontal
 import com.example.medtracker.ui.theme.Margins.vertical
 import com.example.medtracker.ui.theme.Margins.verticalLarge

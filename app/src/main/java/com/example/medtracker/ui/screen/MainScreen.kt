@@ -1,4 +1,4 @@
-package com.example.medtracker.ui
+package com.example.medtracker.ui.screen
 
 import androidx.annotation.StringRes
 import androidx.compose.material.*
