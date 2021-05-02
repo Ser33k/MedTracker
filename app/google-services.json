@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "557475361776",
+    "project_id": "medtracker-aea68",
+    "storage_bucket": "medtracker-aea68.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:557475361776:android:c9bc850f3c1b25a548a335",
+        "android_client_info": {
+          "package_name": "com.example.medtracker"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "557475361776-0fv7a9k3er2hp1bv7sv84ssnagv7ad8a.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.medtracker",
+            "certificate_hash": "3b1212b032616c888ae233210b69c97232754a92"
+          }
+        },
+        {
+          "client_id": "557475361776-time24g6sgrah66650qc08d7m93rgm2s.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCKwjbJHKhNQ0hvLXnLri3UeDi8ZQy-0mg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "557475361776-time24g6sgrah66650qc08d7m93rgm2s.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

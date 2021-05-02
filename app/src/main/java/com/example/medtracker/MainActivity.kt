@@ -1,27 +1,40 @@
 package com.example.medtracker
 
 
-import com.example.medtracker.fragment.HistoryFragment
-import com.example.medtracker.fragment.HeartRateFragment
-import com.example.medtracker.fragment.SettingsFragment
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
+import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
-import com.example.medtracker.fragment.ActivityFragment
+import com.example.medtracker.fragment.*
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.ktx.Firebase
 
 class MainActivity : AppCompatActivity(R.layout.activity_main), PreferenceFragmentCompat.OnPreferenceStartFragmentCallback {
+
+    private companion object {
+        private const val RC_GOOGLE_SIGN_IN = 4926
+        private const val TAG = "MainFrag"
+    }
+
+    private lateinit var auth: FirebaseAuth
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        auth = Firebase.auth
+        auth.signOut()
 
         val homeFragment = HeartRateFragment()
         val activityFragment = ActivityFragment()
         val historyFragment = HistoryFragment()
         val settingsFragment = SettingsFragment()
+        val loginFragment = LoginFragment()
 
-        setCurrentFragment(homeFragment)
+        setCurrentFragment(loginFragment)
 
         val bottomNavigationView :BottomNavigationView = findViewById(R.id.bottomNavigationView)
 
@@ -68,5 +81,16 @@ class MainActivity : AppCompatActivity(R.layout.activity_main), PreferenceFragme
             .addToBackStack(null)
             .commit()
         return true
+    }
+
+    fun onLogoutClick(view: View) {
+        auth.signOut()
+        Log.d(TAG, "logged out")
+        supportFragmentManager.beginTransaction()
+            .replace(R.id.flFragment, LoginFragment())
+            .addToBackStack(null)
+            .commit()
+
+
     }
 }
