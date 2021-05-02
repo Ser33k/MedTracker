@@ -1,4 +1,4 @@
-package com.example.medtracker.fragment
+package com.example.medtracker.login
 
 import android.content.Intent
 import android.os.Bundle
@@ -8,8 +8,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
-import com.example.medtracker.MainActivity
-import com.example.medtracker.R
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
@@ -21,16 +19,30 @@ import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import kotlinx.android.synthetic.main.fragment_login.*
 import androidx.fragment.app.FragmentTransaction
+import com.example.medtracker.fragment.HeartRateFragment
+import com.google.android.gms.auth.api.Auth
+import com.google.android.gms.common.api.GoogleApi
+import com.google.android.gms.common.api.GoogleApiClient
+import androidx.core.app.ActivityCompat.startActivityForResult
+
+
+
+
+
+
 
 
 class LoginFragment:Fragment(com.example.medtracker.R.layout.fragment_login) {
 
     private companion object {
-        private const val RC_GOOGLE_SIGN_IN = 4926
+        private const val RC_GOOGLE_SIGN_IN = 1
         private const val TAG = "LoginFrag"
     }
 
     private lateinit var auth: FirebaseAuth
+    private lateinit var mGoogleApiClient: GoogleApiClient
+    private lateinit var client: GoogleSignInClient
+
 // ...
 // Initialize Firebase Auth
 
@@ -52,11 +64,14 @@ class LoginFragment:Fragment(com.example.medtracker.R.layout.fragment_login) {
             .requestEmail()
             .build()
 
-        val client: GoogleSignInClient = GoogleSignIn.getClient(requireActivity(), gso)
+
+        client = GoogleSignIn.getClient(requireActivity(), gso)
+
         btnSignIn.setOnClickListener{
+            client.signOut()
             val signInIntent = client.signInIntent
             startActivityForResult(signInIntent, RC_GOOGLE_SIGN_IN)
-        }
+         }
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -112,12 +127,13 @@ class LoginFragment:Fragment(com.example.medtracker.R.layout.fragment_login) {
                 if (task.isSuccessful) {
                     // Sign in success, update UI with the signed-in user's information
                     Log.d(TAG, "signInWithCredential:success")
+                    Toast.makeText(requireActivity(),"success",Toast.LENGTH_SHORT)
                     val user = auth.currentUser
                     updateUI(user)
                 } else {
                     // If sign in fails, display a message to the user.
                     Log.w(TAG, "signInWithCredential:failure", task.exception)
-                    Toast.makeText(requireActivity(),"FAILED",Toast.LENGTH_SHORT)
+                    Toast.makeText(activity,"FAILED",Toast.LENGTH_SHORT)
                     updateUI(null)
                 }
             }

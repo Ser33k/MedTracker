@@ -9,6 +9,10 @@ import androidx.fragment.app.Fragment
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
 import com.example.medtracker.fragment.*
+import com.example.medtracker.login.LoginFragment
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions
+import com.google.android.gms.common.api.GoogleApiClient
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
@@ -17,16 +21,18 @@ import com.google.firebase.ktx.Firebase
 class MainActivity : AppCompatActivity(R.layout.activity_main), PreferenceFragmentCompat.OnPreferenceStartFragmentCallback {
 
     private companion object {
-        private const val RC_GOOGLE_SIGN_IN = 4926
+        private const val RC_GOOGLE_SIGN_IN = 1
         private const val TAG = "MainFrag"
     }
 
     private lateinit var auth: FirebaseAuth
+    private lateinit var clientApi: GoogleApiClient
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         auth = Firebase.auth
         auth.signOut()
+
 
         val homeFragment = HeartRateFragment()
         val activityFragment = ActivityFragment()
@@ -90,7 +96,6 @@ class MainActivity : AppCompatActivity(R.layout.activity_main), PreferenceFragme
             .replace(R.id.flFragment, LoginFragment())
             .addToBackStack(null)
             .commit()
-
 
     }
 }
