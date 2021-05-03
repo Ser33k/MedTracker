@@ -17,13 +17,21 @@ import android.provider.Settings
 import android.util.Log
 import android.widget.Button
 import android.widget.TextView
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
+import androidx.fragment.app.viewModels
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import com.example.medtracker.active.ForegroundOnlyLocationService
 import com.example.medtracker.active.SharedPreferenceUtil
 import com.example.medtracker.active.toText
+import com.example.medtracker.data.entity.ActivityLocation
+import com.example.medtracker.data.viewmodel.ActivityLocationViewModel
+import com.example.medtracker.data.viewmodel.ActivityLocationViewModelFactory
 import com.google.android.material.snackbar.Snackbar
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
+import java.util.*
 
 private const val TAG = "TrackActivity"
 private const val REQUEST_FOREGROUND_ONLY_PERMISSIONS_REQUEST_CODE = 34
@@ -275,6 +283,10 @@ class TrackActivity : AppCompatActivity(), SharedPreferences.OnSharedPreferenceC
         outputTextView.text = outputWithPreviousLogs
     }
 
+    private val activityLocationViewModel: ActivityLocationViewModel by viewModels {
+        ActivityLocationViewModelFactory((application as MedTrackerApplication).activityLocationRepository)
+    }
+
     /**
      * Receiver for location broadcasts from [ForegroundOnlyLocationService].
      */
@@ -284,6 +296,14 @@ class TrackActivity : AppCompatActivity(), SharedPreferences.OnSharedPreferenceC
             val location = intent.getParcelableExtra<Location>(
                 ForegroundOnlyLocationService.EXTRA_LOCATION
             )
+
+            runBlocking {
+                launch {
+                    if (location != null) {
+                        activityLocationViewModel.insert(ActivityLocation(Date(location.time), location.latitude, location.longitude))
+                    }
+                }
+            }
 
             if (location != null) {
                 logResultsToScreen("Foreground location: ${location.toText()}")

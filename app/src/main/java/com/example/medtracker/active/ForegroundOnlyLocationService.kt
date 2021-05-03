@@ -17,12 +17,22 @@ import android.os.IBinder
 import android.os.Looper
 import android.util.Log
 import androidx.core.app.NotificationCompat
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.ViewModelProvider
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
+import com.example.medtracker.MedTrackerApplication
+import com.example.medtracker.data.entity.ActivityLocation
+import com.example.medtracker.data.repository.ActivityLocationRepository
+import com.example.medtracker.data.viewmodel.ActivityLocationViewModel
+import com.example.medtracker.data.viewmodel.ActivityLocationViewModelFactory
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationCallback
 import com.google.android.gms.location.LocationRequest
 import com.google.android.gms.location.LocationResult
 import com.google.android.gms.location.LocationServices
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
+import java.util.*
 import java.util.concurrent.TimeUnit
 
 /**
