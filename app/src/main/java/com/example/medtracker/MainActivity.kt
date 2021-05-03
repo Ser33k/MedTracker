@@ -21,18 +21,14 @@ import com.google.firebase.ktx.Firebase
 class MainActivity : AppCompatActivity(R.layout.activity_main), PreferenceFragmentCompat.OnPreferenceStartFragmentCallback {
 
     private companion object {
-        private const val RC_GOOGLE_SIGN_IN = 1
         private const val TAG = "MainFrag"
     }
 
     private lateinit var auth: FirebaseAuth
-    private lateinit var clientApi: GoogleApiClient
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         auth = Firebase.auth
-        auth.signOut()
-
 
         val homeFragment = HeartRateFragment()
         val activityFragment = ActivityFragment()

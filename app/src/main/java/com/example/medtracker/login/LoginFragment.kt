@@ -1,6 +1,7 @@
 package com.example.medtracker.login
 
 import android.content.Intent
+import android.opengl.Visibility
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -24,12 +25,12 @@ import com.google.android.gms.auth.api.Auth
 import com.google.android.gms.common.api.GoogleApi
 import com.google.android.gms.common.api.GoogleApiClient
 import androidx.core.app.ActivityCompat.startActivityForResult
-
-
-
-
-
-
+import androidx.recyclerview.widget.RecyclerView
+import com.example.medtracker.R
+import com.google.android.gms.auth.api.signin.SignInAccount
+import com.google.android.gms.common.SignInButton
+import com.google.android.material.bottomnavigation.BottomNavigationView
+import kotlinx.android.synthetic.main.activity_main.*
 
 
 class LoginFragment:Fragment(com.example.medtracker.R.layout.fragment_login) {
@@ -40,8 +41,8 @@ class LoginFragment:Fragment(com.example.medtracker.R.layout.fragment_login) {
     }
 
     private lateinit var auth: FirebaseAuth
-    private lateinit var mGoogleApiClient: GoogleApiClient
     private lateinit var client: GoogleSignInClient
+    private lateinit var bnv: BottomNavigationView
 
 // ...
 // Initialize Firebase Auth
@@ -58,6 +59,9 @@ class LoginFragment:Fragment(com.example.medtracker.R.layout.fragment_login) {
 
         auth = Firebase.auth
 
+        bnv = requireActivity().findViewById<BottomNavigationView>(R.id.bottomNavigationView)
+        bnv.visibility = View.GONE
+
         // Configure Google Sign In
         val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
             .requestIdToken(getString(com.example.medtracker.R.string.default_web_client_id))
@@ -66,6 +70,8 @@ class LoginFragment:Fragment(com.example.medtracker.R.layout.fragment_login) {
 
 
         client = GoogleSignIn.getClient(requireActivity(), gso)
+
+        btnSignIn.setSize(SignInButton .SIZE_STANDARD);
 
         btnSignIn.setOnClickListener{
             client.signOut()
@@ -112,6 +118,7 @@ class LoginFragment:Fragment(com.example.medtracker.R.layout.fragment_login) {
             com.example.medtracker.R.id.flFragment,
             someFragment
         ) // give your fragment container id in first parameter
+        bnv.visibility = View.VISIBLE
 
         transaction.addToBackStack(null) // if written, this transaction will be added to backstack
 
