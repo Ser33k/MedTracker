@@ -1,6 +1,7 @@
 package com.example.medtracker
 
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -9,7 +10,7 @@ import androidx.fragment.app.Fragment
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
 import com.example.medtracker.fragment.*
-import com.example.medtracker.login.LoginFragment
+import com.example.medtracker.login.LoginActivity
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.common.api.GoogleApiClient
@@ -34,9 +35,8 @@ class MainActivity : AppCompatActivity(R.layout.activity_main), PreferenceFragme
         val activityFragment = ActivityFragment()
         val historyFragment = HistoryFragment()
         val settingsFragment = SettingsFragment()
-        val loginFragment = LoginFragment()
 
-        setCurrentFragment(loginFragment)
+//        startActivity(Intent(this, LoginActivity::class.java))
 
         val bottomNavigationView :BottomNavigationView = findViewById(R.id.bottomNavigationView)
 
@@ -53,7 +53,10 @@ class MainActivity : AppCompatActivity(R.layout.activity_main), PreferenceFragme
 
     }
 
-
+    override fun onStart() {
+        super.onStart()
+        setCurrentFragment(HeartRateFragment())
+    }
 
     private fun setCurrentFragment(fragment: Fragment) =
         supportFragmentManager.beginTransaction().apply {
@@ -88,10 +91,6 @@ class MainActivity : AppCompatActivity(R.layout.activity_main), PreferenceFragme
     fun onLogoutClick(view: View) {
         auth.signOut()
         Log.d(TAG, "logged out")
-        supportFragmentManager.beginTransaction()
-            .replace(R.id.flFragment, LoginFragment())
-            .addToBackStack(null)
-            .commit()
-
+        startActivity(Intent(this, LoginActivity::class.java))
     }
 }

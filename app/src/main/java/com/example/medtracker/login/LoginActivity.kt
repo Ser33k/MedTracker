@@ -8,6 +8,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
@@ -19,21 +20,18 @@ import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import kotlinx.android.synthetic.main.fragment_login.*
-import androidx.fragment.app.FragmentTransaction
-import com.example.medtracker.fragment.HeartRateFragment
-import com.google.android.gms.auth.api.Auth
-import com.google.android.gms.common.api.GoogleApi
-import com.google.android.gms.common.api.GoogleApiClient
-import androidx.core.app.ActivityCompat.startActivityForResult
-import androidx.recyclerview.widget.RecyclerView
 import com.example.medtracker.R
 import com.google.android.gms.auth.api.signin.SignInAccount
 import com.google.android.gms.common.SignInButton
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import kotlinx.android.synthetic.main.activity_main.*
+import android.app.FragmentManager
+import com.example.medtracker.MainActivity
+import com.example.medtracker.RegisterActivity
+import com.example.medtracker.data.entity.HeartRate
 
 
-class LoginFragment:Fragment(com.example.medtracker.R.layout.fragment_login) {
+class LoginActivity:AppCompatActivity() {
 
     private companion object {
         private const val RC_GOOGLE_SIGN_IN = 1
@@ -42,34 +40,27 @@ class LoginFragment:Fragment(com.example.medtracker.R.layout.fragment_login) {
 
     private lateinit var auth: FirebaseAuth
     private lateinit var client: GoogleSignInClient
-    private lateinit var bnv: BottomNavigationView
+//    private lateinit var bnv: BottomNavigationView
+//
 
-// ...
-// Initialize Firebase Auth
-
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        return inflater.inflate(com.example.medtracker.R.layout.fragment_login, container, false)
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.fragment_login)
 
         auth = Firebase.auth
+        auth.signOut()
 
-        bnv = requireActivity().findViewById<BottomNavigationView>(R.id.bottomNavigationView)
-        bnv.visibility = View.GONE
+//        bnv = findViewById<BottomNavigationView>(R.id.bottomNavigationView)
+//        bnv.visibility = View.GONE
 
         // Configure Google Sign In
         val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-            .requestIdToken(getString(com.example.medtracker.R.string.default_web_client_id))
+            .requestIdToken(getString(R.string.default_web_client_id))
             .requestEmail()
             .build()
 
 
-        client = GoogleSignIn.getClient(requireActivity(), gso)
+        client = GoogleSignIn.getClient(this, gso)
 
         btnSignIn.setSize(SignInButton .SIZE_STANDARD);
 
@@ -111,38 +102,61 @@ class LoginFragment:Fragment(com.example.medtracker.R.layout.fragment_login) {
             return
         }
 
+//        bnv.visibility = View.VISIBLE
 
-        val someFragment: Fragment = HeartRateFragment()
-        val transaction: FragmentTransaction = requireFragmentManager().beginTransaction()
-        transaction.replace(
-            com.example.medtracker.R.id.flFragment,
-            someFragment
-        ) // give your fragment container id in first parameter
-        bnv.visibility = View.VISIBLE
-
-        transaction.addToBackStack(null) // if written, this transaction will be added to backstack
-
-        transaction.commit()
+        startActivity(Intent(this, MainActivity::class.java))
 
     }
 
 
     private fun firebaseAuthWithGoogle(idToken: String) {
+
         val credential = GoogleAuthProvider.getCredential(idToken, null)
         auth.signInWithCredential(credential)
-            .addOnCompleteListener(requireActivity()) { task ->
+            .addOnCompleteListener(this) { task ->
                 if (task.isSuccessful) {
                     // Sign in success, update UI with the signed-in user's information
                     Log.d(TAG, "signInWithCredential:success")
-                    Toast.makeText(requireActivity(),"success",Toast.LENGTH_SHORT)
+                    Toast.makeText(this,"success",Toast.LENGTH_SHORT)
                     val user = auth.currentUser
                     updateUI(user)
                 } else {
                     // If sign in fails, display a message to the user.
                     Log.w(TAG, "signInWithCredential:failure", task.exception)
-                    Toast.makeText(activity,"FAILED",Toast.LENGTH_SHORT)
+                    Toast.makeText(this,"FAILED",Toast.LENGTH_SHORT)
                     updateUI(null)
                 }
             }
+    }
+
+
+    private fun signIn(email: String, password: String) {
+        // [START sign_in_with_email]
+        auth.signInWithEmailAndPassword(email, password)
+            .addOnCompleteListener(this) { task ->
+                if (task.isSuccessful) {
+                    // Sign in success, update UI with the signed-in user's information
+                    Log.d(TAG, "signInWithEmail:success")
+                    val user = auth.currentUser
+                    updateUI(user)
+                } else {
+                    // If sign in fails, display a message to the user.
+                    Log.w(TAG, "signInWithEmail:failure", task.exception)
+                    Toast.makeText(this, "Authentication failed.",
+                        Toast.LENGTH_SHORT).show()
+                    updateUI(null)
+                }
+            }
+    }
+
+    fun onLoginWithEmailClick(view: View) {
+        val email =  emailTv.text.toString()
+        val pass = passwordTv.text.toString()
+
+        signIn(email, pass)
+    }
+
+    fun openRegisterActivity(view: View) {
+        startActivity(Intent(this, RegisterActivity::class.java))
     }
 }
