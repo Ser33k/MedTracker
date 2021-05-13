@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.medtracker" >
+          package="com.example.medtracker">
+
+    <!-- Required for foreground services on P+. -->
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
 
     <uses-permission android:name="android.permission.BLUETOOTH" />
     <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
@@ -12,8 +15,8 @@
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
     <uses-feature
-        android:name="android.hardware.bluetooth_le"
-        android:required="false" />
+            android:name="android.hardware.bluetooth_le"
+            android:required="false"/>
 
     <application
         android:name=".MedTrackerApplication"
@@ -36,19 +39,31 @@
             android:value="AIzaSyCAPr5HSXXfLQJ2jl1W0nDsD1iWHu3GPv8" />
 
         <activity android:name=".ble.ui.DeviceControlActivity" />
+        <activity android:name=".ble.ui.DeviceScanActivity" />
         <activity android:name=".MainActivity" />
         <activity android:name=".login.LoginActivity" >
             <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
+                <action android:name="android.intent.action.MAIN"/>
 
-                <category android:name="android.intent.category.LAUNCHER" />
+                <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
+        <activity
+            android:name=".TrackActivity"
+            android:exported="true" />
 
         <service
             android:name=".ble.service.BluetoothLeService"
-            android:enabled="true" >
-        </service>
+            android:enabled="true"></service>
+
+        <!-- Foreground services in Android 10+ require type. -->
+        <!-- TODO: 2.2, Add foreground service type. -->
+        <service
+            android:name="com.example.medtracker.active.ForegroundOnlyLocationService"
+            android:enabled="true"
+            android:exported="false"
+            android:foregroundServiceType="location" />
+
     </application>
 
 </manifest>

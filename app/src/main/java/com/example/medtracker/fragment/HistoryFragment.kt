@@ -17,7 +17,7 @@ import com.example.medtracker.data.viewmodel.HeartRateViewModelFactory
 
 class HistoryFragment:Fragment(R.layout.fragment_history) {
     private val heartRateViewModel: HeartRateViewModel by viewModels {
-        HeartRateViewModelFactory((requireActivity().application as MedTrackerApplication).repository)
+        HeartRateViewModelFactory((requireActivity().application as MedTrackerApplication).heartRateRepository)
     }
 
     override fun onCreateView(

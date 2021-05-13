@@ -3,12 +3,27 @@ package com.example.medtracker.fragment
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.Observer
+import androidx.lifecycle.asLiveData
+import com.example.medtracker.MedTrackerApplication
 import com.example.medtracker.R
+import com.example.medtracker.data.entity.ActivityLocation
+import com.example.medtracker.data.entity.HeartRate
+import com.example.medtracker.data.viewmodel.ActivityLocationViewModel
+import com.example.medtracker.data.viewmodel.ActivityLocationViewModelFactory
 import com.google.android.gms.maps.*
+import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
+import com.google.android.gms.maps.model.PolylineOptions
+import kotlinx.coroutines.flow.asFlow
 
 
 class ActivityFragment:Fragment(R.layout.fragment_activity){
+
+    private val activityLocationViewModel: ActivityLocationViewModel by viewModels {
+        ActivityLocationViewModelFactory((requireActivity().application as MedTrackerApplication).activityLocationRepository)
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -16,22 +31,37 @@ class ActivityFragment:Fragment(R.layout.fragment_activity){
         val supportMapFragment =
             childFragmentManager.findFragmentById(R.id.google_map) as SupportMapFragment;
 
-        supportMapFragment.getMapAsync(OnMapReadyCallback { googleMap ->
-            googleMap.setOnMapClickListener(GoogleMap.OnMapClickListener {
-                var markerOptions = MarkerOptions()
+        activityLocationViewModel.allActivityLocations.observe(viewLifecycleOwner, Observer { activityLocations: List<ActivityLocation> ->
+            // Update the map with locations.
+            activityLocations?.let { locList ->
+                val polylineOptions = PolylineOptions()
+                polylineOptions.addAll(locList.stream().map {
+                    LatLng(it.latitude, it.longitude)
+                }.iterator().asSequence().asIterable())
+                polylineOptions.color(0xffe8642b.toInt())
 
-                markerOptions.position(it)
-                markerOptions.title("${it.latitude} : ${it.longitude}");
+                val last = locList.size - 1
+                if (last >= 0) {
+                    val loc = locList[last]
+                    val lat = loc.latitude
+                    val lon = loc.longitude
 
-                googleMap.clear();
+                    supportMapFragment.getMapAsync(OnMapReadyCallback { googleMap ->
+                        var markerOptions = MarkerOptions()
+                        val lating = LatLng(lat, lon)
+                        markerOptions.position(lating)
+                        markerOptions.title("${lating.latitude} : ${lating.longitude}")
 
-                googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(
-                    it, 10f
-                ))
+                        googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(
+                            lating, 20f
+                        ))
+                        googleMap.addMarker(markerOptions)
 
-                googleMap.addMarker(markerOptions);
+                        googleMap.addPolyline(polylineOptions)
+                    })
+                }
 
-            })
+            }
         })
 
     }

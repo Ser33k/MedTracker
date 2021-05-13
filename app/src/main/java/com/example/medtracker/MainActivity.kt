@@ -2,6 +2,9 @@ package com.example.medtracker
 
 
 import android.content.Intent
+import com.example.medtracker.fragment.HistoryFragment
+import com.example.medtracker.fragment.HeartRateFragment
+import com.example.medtracker.fragment.SettingsFragment
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -43,7 +46,7 @@ class MainActivity : AppCompatActivity(R.layout.activity_main), PreferenceFragme
         bottomNavigationView.setOnNavigationItemSelectedListener {
             when(it.itemId){
                 R.id.bottomNavigationHomeMenuId->setCurrentFragment(homeFragment)
-                R.id.bottomNavigationRunningMenuId->setCurrentFragment(activityFragment)
+                R.id.bottomNavigationRunningMenuId-> startActivity(Intent(this, TrackActivity::class.java))//setCurrentFragment(activityFragment)
                 R.id.bottomNavigationHistoryMenuId->setCurrentFragment(historyFragment)
                 R.id.bottomNavigationSettingsMenuId->setCurrentFragment(settingsFragment)
 

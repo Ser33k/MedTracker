@@ -6,21 +6,23 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 import androidx.sqlite.db.SupportSQLiteDatabase
+import com.example.medtracker.data.dao.ActivityLocationDao
 import com.example.medtracker.data.dao.HeartRateDao
+import com.example.medtracker.data.entity.ActivityLocation
 import com.example.medtracker.data.entity.HeartRate
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
-import java.time.Instant
 import java.util.*
 
 // Annotates class to be a Room Database with a table (entity) of the HeartRate class
-@Database(entities = [HeartRate::class], version = 1, exportSchema = false)
+@Database(entities = [HeartRate::class, ActivityLocation::class], version = 1, exportSchema = false)
 @TypeConverters(Converters::class)
-public abstract class HeartRateDatabase : RoomDatabase() {
+public abstract class MedTrackerDatabase : RoomDatabase() {
 
     abstract fun heartRateDao(): HeartRateDao
+    abstract fun activityLocationDao(): ActivityLocationDao
 
-    private class HeartRateDatabaseCallback(
+    private class MedTrackerDatabaseCallback(
         private val scope: CoroutineScope
     ) : RoomDatabase.Callback() {
 
@@ -42,8 +44,6 @@ public abstract class HeartRateDatabase : RoomDatabase() {
                 val heartRate = HeartRate(Calendar.getInstance().time,80 + i*2)
                 heartRateDao.insert(heartRate)
             }
-
-            // TODO: Add your own heartRates!
         }
     }
 
@@ -51,18 +51,18 @@ public abstract class HeartRateDatabase : RoomDatabase() {
         // Singleton prevents multiple instances of database opening at the
         // same time.
         @Volatile
-        private var INSTANCE: HeartRateDatabase? = null
+        private var INSTANCE: MedTrackerDatabase? = null
 
-        fun getDatabase(context: Context, scope: CoroutineScope): HeartRateDatabase {
+        fun getDatabase(context: Context, scope: CoroutineScope): MedTrackerDatabase {
             // if the INSTANCE is not null, then return it,
             // if it is, then create the database
             return INSTANCE ?: synchronized(this) {
                 val instance = Room.databaseBuilder(
                     context.applicationContext,
-                    HeartRateDatabase::class.java,
-                    "heartrate_database"
+                    MedTrackerDatabase::class.java,
+                    "medtrack_database"
                 )
-                    .addCallback(HeartRateDatabaseCallback(scope))
+                    .addCallback(MedTrackerDatabaseCallback(scope))
                     .build()
                 INSTANCE = instance
                 // return instance
