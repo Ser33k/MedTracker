@@ -31,7 +31,7 @@ import com.example.medtracker.RegisterActivity
 import com.example.medtracker.data.entity.HeartRate
 
 
-class LoginActivity:AppCompatActivity() {
+class LoginActivity : AppCompatActivity() {
 
     private companion object {
         private const val RC_GOOGLE_SIGN_IN = 1
@@ -48,7 +48,7 @@ class LoginActivity:AppCompatActivity() {
         setContentView(R.layout.fragment_login)
 
         auth = Firebase.auth
-        auth.signOut()
+//        auth.signOut()
 
 //        bnv = findViewById<BottomNavigationView>(R.id.bottomNavigationView)
 //        bnv.visibility = View.GONE
@@ -62,13 +62,13 @@ class LoginActivity:AppCompatActivity() {
 
         client = GoogleSignIn.getClient(this, gso)
 
-        btnSignIn.setSize(SignInButton .SIZE_STANDARD);
+        btnSignIn.setSize(SignInButton.SIZE_STANDARD);
 
-        btnSignIn.setOnClickListener{
+        btnSignIn.setOnClickListener {
             client.signOut()
             val signInIntent = client.signInIntent
             startActivityForResult(signInIntent, RC_GOOGLE_SIGN_IN)
-         }
+        }
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -97,7 +97,7 @@ class LoginActivity:AppCompatActivity() {
     }
 
     private fun updateUI(currentUser: FirebaseUser?) {
-        if (currentUser == null){
+        if (currentUser == null) {
             Log.w(TAG, "User is null")
             return
         }
@@ -117,13 +117,13 @@ class LoginActivity:AppCompatActivity() {
                 if (task.isSuccessful) {
                     // Sign in success, update UI with the signed-in user's information
                     Log.d(TAG, "signInWithCredential:success")
-                    Toast.makeText(this,"success",Toast.LENGTH_SHORT)
+                    Toast.makeText(this, "success", Toast.LENGTH_SHORT)
                     val user = auth.currentUser
                     updateUI(user)
                 } else {
                     // If sign in fails, display a message to the user.
                     Log.w(TAG, "signInWithCredential:failure", task.exception)
-                    Toast.makeText(this,"FAILED",Toast.LENGTH_SHORT)
+                    Toast.makeText(this, "FAILED", Toast.LENGTH_SHORT)
                     updateUI(null)
                 }
             }
@@ -132,25 +132,34 @@ class LoginActivity:AppCompatActivity() {
 
     private fun signIn(email: String, password: String) {
         // [START sign_in_with_email]
-        auth.signInWithEmailAndPassword(email, password)
-            .addOnCompleteListener(this) { task ->
-                if (task.isSuccessful) {
-                    // Sign in success, update UI with the signed-in user's information
-                    Log.d(TAG, "signInWithEmail:success")
-                    val user = auth.currentUser
-                    updateUI(user)
-                } else {
-                    // If sign in fails, display a message to the user.
-                    Log.w(TAG, "signInWithEmail:failure", task.exception)
-                    Toast.makeText(this, "Authentication failed.",
-                        Toast.LENGTH_SHORT).show()
-                    updateUI(null)
+        if (email.isNotEmpty() && password.isNotEmpty()) {
+            auth.signInWithEmailAndPassword(email, password)
+                .addOnCompleteListener(this) { task ->
+                    if (task.isSuccessful) {
+                        // Sign in success, update UI with the signed-in user's information
+                        Log.d(TAG, "signInWithEmail:success")
+                        val user = auth.currentUser
+                        updateUI(user)
+                    } else {
+                        // If sign in fails, display a message to the user.
+                        Log.w(TAG, "signInWithEmail:failure", task.exception)
+                        Toast.makeText(
+                            this, "Login failed.",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                        updateUI(null)
+                    }
                 }
-            }
+        } else {
+            Toast.makeText(
+                this, "Login failed.",
+                Toast.LENGTH_SHORT
+            ).show()
+        }
     }
 
     fun onLoginWithEmailClick(view: View) {
-        val email =  emailTv.text.toString()
+        val email = emailTv.text.toString()
         val pass = passwordTv.text.toString()
 
         signIn(email, pass)

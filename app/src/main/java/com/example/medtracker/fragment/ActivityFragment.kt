@@ -5,18 +5,15 @@ import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
-import androidx.lifecycle.asLiveData
 import com.example.medtracker.MedTrackerApplication
 import com.example.medtracker.R
 import com.example.medtracker.data.entity.ActivityLocation
-import com.example.medtracker.data.entity.HeartRate
 import com.example.medtracker.data.viewmodel.ActivityLocationViewModel
 import com.example.medtracker.data.viewmodel.ActivityLocationViewModelFactory
 import com.google.android.gms.maps.*
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
 import com.google.android.gms.maps.model.PolylineOptions
-import kotlinx.coroutines.flow.asFlow
 
 
 class ActivityFragment:Fragment(R.layout.fragment_activity){
@@ -29,7 +26,7 @@ class ActivityFragment:Fragment(R.layout.fragment_activity){
         super.onViewCreated(view, savedInstanceState)
 
         val supportMapFragment =
-            childFragmentManager.findFragmentById(R.id.google_map) as SupportMapFragment;
+            childFragmentManager.findFragmentById(R.id.google_map1) as SupportMapFragment;
 
         activityLocationViewModel.allActivityLocations.observe(viewLifecycleOwner, Observer { activityLocations: List<ActivityLocation> ->
             // Update the map with locations.

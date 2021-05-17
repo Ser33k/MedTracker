@@ -9,7 +9,12 @@
     <item android:title="History"
         android:id="@+id/bottomNavigationHistoryMenuId"
         android:icon="@drawable/history"/>
+    <item android:title="Running history"
+        android:id="@+id/bottomNavigationRunningHistoryMenuId"
+        android:icon="@drawable/run_history"
+        />
     <item android:title="Settings"
         android:id="@+id/bottomNavigationSettingsMenuId"
         android:icon="@drawable/more"/>
+
 </menu>

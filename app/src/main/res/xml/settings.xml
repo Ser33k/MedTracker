@@ -32,15 +32,17 @@
                 app:title="Enable notifications"/>
 
     </PreferenceCategory>
-
     <PreferenceCategory
-            app:key="help_category"
-            app:title="Help">
+        app:key="logout"
+        app:title="Logout">
 
         <Preference
-                app:key="feedback"
-                app:summary="Report technical issues or suggest new features"
-                app:title="Send feedback"/>
+            android:onClick="onLogoutClick"
+            app:summary="Logout"
+
+            app:key="logout"
+            app:title="Logout" />
 
     </PreferenceCategory>
+
 </PreferenceScreen>

@@ -16,7 +16,7 @@ class ActivityLocationRepository(private val activityLocationDao: ActivityLocati
         activityLocationDao.insert(activityLocation)
     }
 
-    fun getActivityLocationsBetweenDates(from: Date, to: Date) {
-        activityLocationDao.getActivityLocationsBetweenDates(from, to)
+    fun getActivityLocationsBetweenDates(from: Date, to: Date): Flow<List<ActivityLocation>> {
+       return activityLocationDao.getActivityLocationsBetweenDates(from, to)
     }
 }

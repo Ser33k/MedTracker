@@ -9,6 +9,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
@@ -49,7 +50,7 @@ class MainActivity : AppCompatActivity(R.layout.activity_main), PreferenceFragme
                 R.id.bottomNavigationRunningMenuId-> startActivity(Intent(this, TrackActivity::class.java))//setCurrentFragment(activityFragment)
                 R.id.bottomNavigationHistoryMenuId->setCurrentFragment(historyFragment)
                 R.id.bottomNavigationSettingsMenuId->setCurrentFragment(settingsFragment)
-
+                R.id.bottomNavigationRunningHistoryMenuId -> startActivity(Intent(this, RunningHistoryActivity::class.java))
             }
             true
         }
@@ -75,13 +76,13 @@ class MainActivity : AppCompatActivity(R.layout.activity_main), PreferenceFragme
             pref.fragment)
         fragment.arguments = args
 
-//        supportFragmentManager.setFragmentResultListener("ACCOUNT", this, { requestKey, result ->
-//            if (requestKey == "ACCOUNT") {
-//                // Get result from bundle
-//                Log.d("MainActivity", result["name"] as String)
-//                Toast.makeText(this,result["name"] as String, Toast.LENGTH_SHORT).show()
-//            }
-//        })
+        supportFragmentManager.setFragmentResultListener("ACCOUNT", this, { requestKey, result ->
+            if (requestKey == "ACCOUNT") {
+                // Get result from bundle
+                Log.d("MainActivity", result["name"] as String)
+                Toast.makeText(this,result["name"] as String, Toast.LENGTH_SHORT).show()
+            }
+        })
 
         // Replace the existing Fragment with the new Fragment
         supportFragmentManager.beginTransaction()
@@ -96,4 +97,6 @@ class MainActivity : AppCompatActivity(R.layout.activity_main), PreferenceFragme
         Log.d(TAG, "logged out")
         startActivity(Intent(this, LoginActivity::class.java))
     }
+
+
 }
