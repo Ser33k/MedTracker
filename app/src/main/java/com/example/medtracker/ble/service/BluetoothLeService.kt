@@ -14,7 +14,13 @@ import android.content.Intent
 import android.os.Binder
 import android.os.IBinder
 import android.util.Log
-import java.util.UUID
+import com.example.medtracker.data.MedTrackerDatabase
+import com.example.medtracker.data.entity.ActivityLocation
+import com.example.medtracker.data.entity.HeartRate
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
+import java.util.*
 
 /**
  * Service for managing connection and data communication with a GATT server hosted on a
@@ -95,6 +101,13 @@ class BluetoothLeService : Service() {
             }
             val heartRate = characteristic.getIntValue(format, 1)!!
             Log.d(TAG, String.format("Received heart rate: %d", heartRate))
+
+            runBlocking {
+                launch {
+                    var db = MedTrackerDatabase.getDatabase(applicationContext, this)
+                    db.heartRateDao().insert(HeartRate(Calendar.getInstance().time, heartRate))
+                }
+            }
             intent.putExtra(EXTRA_DATA, heartRate.toString())
         } else {
             // For all other profiles, writes the data formatted in HEX.

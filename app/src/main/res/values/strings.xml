@@ -73,4 +73,5 @@
     <string name="launch_activity">Launch activity</string>
 
     <string name="logout">logout</string>
+    <string name="connect">connect</string>
 </resources>

@@ -24,16 +24,19 @@
     </PreferenceCategory>
 
     <PreferenceCategory
-            app:key="notifications_category"
-            app:title="Notifications">
+            app:key="connections_category"
+            app:title="Connection">
 
-        <SwitchPreferenceCompat
-                app:key="notifications"
-                app:title="Enable notifications"/>
+        <Preference
+            android:onClick="onConnectClick"
+            app:summary="Connect BLE"
+
+            app:key="connect"
+            app:title="Enable BLE heart rate" />
 
     </PreferenceCategory>
     <PreferenceCategory
-        app:key="logout"
+        app:key="logout_category"
         app:title="Logout">
 
         <Preference

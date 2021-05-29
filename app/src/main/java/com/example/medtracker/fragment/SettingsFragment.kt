@@ -9,6 +9,7 @@ import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
 import com.example.medtracker.MainActivity
 import com.example.medtracker.R
+import com.example.medtracker.ble.ui.DeviceScanActivity
 import com.example.medtracker.login.LoginActivity
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
@@ -36,6 +37,12 @@ class SettingsFragment:PreferenceFragmentCompat() {
                 auth.signOut()
                 Log.d("SETT", "logged out")
                 val intent = Intent (activity, LoginActivity::class.java)
+                startActivity(intent)
+                true
+            }
+            getString(R.string.connect) -> {
+                Log.d("SETT", "BLE connect request")
+                val intent = Intent (activity, DeviceScanActivity::class.java)
                 startActivity(intent)
                 true
             }
