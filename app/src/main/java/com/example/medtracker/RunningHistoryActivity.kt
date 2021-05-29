@@ -50,6 +50,8 @@ class RunningHistoryActivity : AppCompatActivity(), OnMapReadyCallback {
     private var eText: EditText? = null
     private var btnGet: Button? = null
     private var tvw: TextView? = null
+    private var calTv: TextView? = null
+    private var timeTv: TextView? = null
 
     private var day: Int = 0
     private var month: Int = 0
@@ -58,7 +60,9 @@ class RunningHistoryActivity : AppCompatActivity(), OnMapReadyCallback {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_running_history)
-        tvw = findViewById<View>(R.id.textView1) as TextView
+        tvw = findViewById<View>(R.id.textView5) as TextView
+        calTv = findViewById<View>(R.id.textView1) as TextView
+        timeTv = findViewById<View>(R.id.textView3) as TextView
         eText = findViewById<View>(R.id.editText1) as EditText
         eText!!.inputType = InputType.TYPE_NULL
         eText!!.setOnClickListener {
@@ -138,7 +142,7 @@ class RunningHistoryActivity : AppCompatActivity(), OnMapReadyCallback {
             var distance: Double = 0.0
             var i = 1
 
-            activityLocationViewModel.getActivityLocationsBetweenDates(from!!, to!!)
+            activityLocationViewModel.getActivityLocationsBetweenDates(from, to!!)
                 .observe(this, { activityLocations: List<ActivityLocation> ->
                     activityLocations?.let { locList ->
 
@@ -201,6 +205,13 @@ class RunningHistoryActivity : AppCompatActivity(), OnMapReadyCallback {
         return dist
     }
 
+    private fun calcCalories(){
+        // http://www.shapesense.com/fitness-exercise/calculators/heart-rate-based-calorie-burn-calculator.shtml
+        // Male: ((-55.0969 + (0.6309 x HR) + (0.1988 x W) + (0.2017 x A))/4.184) x 60 x T
+        // Female: ((-20.4022 + (0.4472 x HR) - (0.1263 x W) + (0.074 x A))/4.184) x 60 x T
+
+    }
+
     private fun deg2rad(deg: Double): Double {
         return deg * Math.PI / 180.0
     }
@@ -208,4 +219,6 @@ class RunningHistoryActivity : AppCompatActivity(), OnMapReadyCallback {
     private fun rad2deg(rad: Double): Double {
         return rad * 180.0 / Math.PI
     }
+
+
 }
