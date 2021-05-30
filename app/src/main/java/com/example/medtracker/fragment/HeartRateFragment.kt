@@ -7,7 +7,11 @@ import android.view.View
 import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
+import com.example.medtracker.MedTrackerApplication
 import com.example.medtracker.R
+import com.example.medtracker.data.viewmodel.HeartRateViewModel
+import com.example.medtracker.data.viewmodel.HeartRateViewModelFactory
 import com.jjoe64.graphview.GraphView
 import com.jjoe64.graphview.series.DataPoint
 import com.jjoe64.graphview.series.LineGraphSeries
@@ -16,6 +20,9 @@ import kotlin.random.Random
 
 
 class HeartRateFragment:Fragment(R.layout.fragment_hr) {
+    private val heartRateViewModel: HeartRateViewModel by viewModels {
+        HeartRateViewModelFactory((requireActivity().application as MedTrackerApplication).heartRateRepository)
+    }
 
     var hr = 90 // heart rate
     private val random = Random(2)
@@ -25,20 +32,20 @@ class HeartRateFragment:Fragment(R.layout.fragment_hr) {
     ))
 
 
-    lateinit var mainHandler: Handler
+//    lateinit var mainHandler: Handler
 
     private lateinit var progressText: TextView
     private lateinit var progressValue: ProgressBar
 
     private lateinit var graph: GraphView
 
-        private val updateHRTask = object: Runnable {
-        override fun run() {
-            changeHeartRate()
-            updateGraph()
-            mainHandler.postDelayed(this, 1000)
-        }
-    }
+//        private val updateHRTask = object: Runnable {
+//        override fun run() {
+//            changeHeartRate()
+//            updateGraph()
+//            mainHandler.postDelayed(this, 1000)
+//        }
+//    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -53,31 +60,37 @@ class HeartRateFragment:Fragment(R.layout.fragment_hr) {
         graph.viewport.setMaxX(60.0)
         graph.title = "Last minute HR"
 
+//        mainHandler = Handler(Looper.getMainLooper())
 
-        mainHandler = Handler(Looper.getMainLooper())
+        heartRateViewModel.allHeartRates.observe(viewLifecycleOwner, androidx.lifecycle.Observer {
+            var hr = it[it.size-1].value
+            series.appendData(DataPoint(inc++.toDouble(), hr.toDouble()), true, 60)
+            progressText.text = hr.toString()
+            progressValue.progress = hr
+        })
     }
 
     override fun onPause() {
         super.onPause()
-        mainHandler.removeCallbacks(updateHRTask)
+//        mainHandler.removeCallbacks(updateHRTask)
     }
 
     override fun onResume() {
         super.onResume()
-        mainHandler.post(updateHRTask)
+//        mainHandler.post(updateHRTask)
     }
 
-    fun changeHeartRate() {
-        if (random.nextInt(0, 2) == 1)
-            hr -= random.nextInt(1, 10)
-        else
-            hr += random.nextInt(1, 10)
-
-        progressText.text = hr.toString()
-        progressValue.progress = hr
-    }
-
-    private fun updateGraph(){
-        series.appendData(DataPoint(inc++.toDouble(), hr.toDouble()), true, 60)
-    }
+//    fun changeHeartRate() {
+//        if (random.nextInt(0, 2) == 1)
+//            hr -= random.nextInt(1, 10)
+//        else
+//            hr += random.nextInt(1, 10)
+//
+//        progressText.text = hr.toString()
+//        progressValue.progress = hr
+//    }
+//
+//    private fun updateGraph(){
+//        series.appendData(DataPoint(inc++.toDouble(), hr.toDouble()), true, 60)
+//    }
 }
