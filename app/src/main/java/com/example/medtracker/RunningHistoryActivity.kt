@@ -23,16 +23,22 @@ import androidx.fragment.app.clearFragmentResult
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.LifecycleOwner
 import com.example.medtracker.data.entity.ActivityLocation
+import com.example.medtracker.data.entity.HeartRate
+import com.example.medtracker.data.repository.HeartRateRepository
 import com.example.medtracker.data.viewmodel.ActivityLocationViewModel
 import com.example.medtracker.data.viewmodel.ActivityLocationViewModelFactory
+import com.example.medtracker.data.viewmodel.HeartRateViewModel
+import com.example.medtracker.data.viewmodel.HeartRateViewModelFactory
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.*
 import com.google.type.Date
+import com.jjoe64.graphview.series.DataPoint
 import kotlinx.android.synthetic.main.activity_running_history.*
 import java.util.*
+import kotlin.math.floor
 import kotlin.time.milliseconds
 
 
@@ -45,6 +51,9 @@ class RunningHistoryActivity : AppCompatActivity(), OnMapReadyCallback {
         ActivityLocationViewModelFactory((application as MedTrackerApplication).activityLocationRepository)
     }
 
+    private val heartRateViewModel: HeartRateViewModel by viewModels {
+        HeartRateViewModelFactory((application as MedTrackerApplication).heartRateRepository)
+    }
 
     private var picker: DatePickerDialog? = null
     private var eText: EditText? = null
@@ -56,6 +65,8 @@ class RunningHistoryActivity : AppCompatActivity(), OnMapReadyCallback {
     private var day: Int = 0
     private var month: Int = 0
     private var year1: Int = 0
+
+    private var calories: Double = 0.0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -94,6 +105,11 @@ class RunningHistoryActivity : AppCompatActivity(), OnMapReadyCallback {
         mapFragment = supportFragmentManager
             .findFragmentById(R.id.google_map2) as SupportMapFragment?
         mapFragment?.getMapAsync(this)
+
+//        heartRateViewModel.allHeartRates.observe(this, {
+//            var hr = it[it.size-1].value
+//            calories += calcCalories(hr.toDouble())
+//        } )
     }
 
 
@@ -140,7 +156,24 @@ class RunningHistoryActivity : AppCompatActivity(), OnMapReadyCallback {
 
 
             var distance: Double = 0.0
-            var i = 1
+
+            var i = 0
+
+            heartRateViewModel.getHeartRatesBetweenDates(from, to!!)
+                .observe(this, {heartRates: List<HeartRate> ->
+                    heartRates?.let { heartRatesList ->
+                        calories = 0.0
+                        while (i <= heartRatesList.size - 1) {
+                            calories += calcCalories(heartRatesList[i].value.toDouble())
+                            i++
+                        }
+                        //(floor(calories*100) /100)
+                        calTv?.text = calories.toString()
+                        timeTv?.text = secondsToTime(i)
+                    }
+                })
+
+            i = 1
 
             activityLocationViewModel.getActivityLocationsBetweenDates(from, to!!)
                 .observe(this, { activityLocations: List<ActivityLocation> ->
@@ -205,11 +238,24 @@ class RunningHistoryActivity : AppCompatActivity(), OnMapReadyCallback {
         return dist
     }
 
-    private fun calcCalories(){
+    private fun calcCalories(hr: Double): Double{
         // http://www.shapesense.com/fitness-exercise/calculators/heart-rate-based-calorie-burn-calculator.shtml
         // Male: ((-55.0969 + (0.6309 x HR) + (0.1988 x W) + (0.2017 x A))/4.184) x 60 x T
         // Female: ((-20.4022 + (0.4472 x HR) - (0.1263 x W) + (0.074 x A))/4.184) x 60 x T
+        return ((-20.4022 + (0.4472 * hr) - (0.1263 * 70) + (0.074 * 25))/4.184) * 60 * 1/3600
+//        ((-20.4022 + (0.4472 * 90) - (0.1263 * 70) + (0.074 * 25))/4.184) * 60 * 1/3600
+    }
 
+    private fun secondsToTime(seconds: Int): String {
+        val hours = seconds / 3600
+        val minutes = seconds % 3600 / 60
+        val secs = seconds % 60
+
+        val time = String.format(
+            Locale.getDefault(),
+            "%02d:%02d:%02d", hours, minutes, secs
+        )
+        return time
     }
 
     private fun deg2rad(deg: Double): Double {

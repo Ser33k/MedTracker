@@ -2,6 +2,7 @@ package com.example.medtracker.data.repository
 
 import androidx.annotation.WorkerThread
 import com.example.medtracker.data.dao.HeartRateDao
+import com.example.medtracker.data.entity.ActivityLocation
 import com.example.medtracker.data.entity.HeartRate
 import kotlinx.coroutines.flow.Flow
 import java.util.*
@@ -22,7 +23,7 @@ class HeartRateRepository(private val heartRateDao: HeartRateDao) {
         heartRateDao.insert(heartRate)
     }
 
-    fun getHeartRatesBetweenDates(from: Date, to: Date) {
-        heartRateDao.getHeartRatesBetweenDates(from, to)
+    fun getHeartRatesBetweenDates(from: Date, to: Date):Flow<List<HeartRate>> {
+        return heartRateDao.getHeartRatesBetweenDates(from, to)
     }
 }

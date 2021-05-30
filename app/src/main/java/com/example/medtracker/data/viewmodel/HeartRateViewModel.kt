@@ -5,9 +5,11 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
+import com.example.medtracker.data.entity.ActivityLocation
 import com.example.medtracker.data.entity.HeartRate
 import com.example.medtracker.data.repository.HeartRateRepository
 import kotlinx.coroutines.launch
+import java.util.*
 
 class HeartRateViewModel(private val repository: HeartRateRepository): ViewModel() {
 
@@ -16,6 +18,10 @@ class HeartRateViewModel(private val repository: HeartRateRepository): ViewModel
     //   the UI when the data actually changes.
     // - Repository is completely separated from the UI through the ViewModel.
     val allHeartRates: LiveData<List<HeartRate>> = repository.allHeartRates.asLiveData()
+
+    fun getHeartRatesBetweenDates(from: Date, to: Date):  LiveData<List<HeartRate>>{
+        return repository.getHeartRatesBetweenDates(from, to).asLiveData()
+    }
 
     /**
      * Launching a new coroutine to insert the data in a non-blocking way
