@@ -38,7 +38,7 @@ class HistoryFragment:Fragment(R.layout.fragment_history) {
         // Add an observer on the LiveData returned by getAlphabetizedWords.
         // The onChanged() method fires when the observed data changes and the activity is
         // in the foreground.
-        heartRateViewModel.allHeartRates.observe(viewLifecycleOwner, Observer { heartRates: List<HeartRate> ->
+        heartRateViewModel.allHeartRates.observeOnce(viewLifecycleOwner, { heartRates: List<HeartRate> ->
             // Update the cached copy of the heartRates in the adapter.
             heartRates?.let { adapter.submitList(it) }
         })

@@ -22,6 +22,7 @@ import androidx.annotation.RequiresApi
 import androidx.fragment.app.clearFragmentResult
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.LiveData
 import com.example.medtracker.data.entity.ActivityLocation
 import com.example.medtracker.data.entity.HeartRate
 import com.example.medtracker.data.repository.HeartRateRepository
@@ -156,19 +157,17 @@ class RunningHistoryActivity : AppCompatActivity(), OnMapReadyCallback {
 
 
             var distance: Double = 0.0
-
+            calories = 0.0
             var i = 0
 
-            heartRateViewModel.getHeartRatesBetweenDates(from, to!!)
-                .observe(this, {heartRates: List<HeartRate> ->
+            heartRateViewModel.getHeartRatesBetweenDates(from, to)
+                .observeOnce(this, {heartRates: List<HeartRate> ->
                     heartRates?.let { heartRatesList ->
-                        calories = 0.0
                         while (i <= heartRatesList.size - 1) {
                             calories += calcCalories(heartRatesList[i].value.toDouble())
                             i++
                         }
-                        //(floor(calories*100) /100)
-                        calTv?.text = calories.toString()
+                        calTv?.text = (floor(calories*100) /100).toString()
                         timeTv?.text = secondsToTime(i)
                     }
                 })
@@ -176,7 +175,7 @@ class RunningHistoryActivity : AppCompatActivity(), OnMapReadyCallback {
             i = 1
 
             activityLocationViewModel.getActivityLocationsBetweenDates(from, to!!)
-                .observe(this, { activityLocations: List<ActivityLocation> ->
+                .observeOnce(this, { activityLocations: List<ActivityLocation> ->
                     activityLocations?.let { locList ->
 
                         while (i <= locList.size - 1) {
@@ -265,6 +264,4 @@ class RunningHistoryActivity : AppCompatActivity(), OnMapReadyCallback {
     private fun rad2deg(rad: Double): Double {
         return rad * 180.0 / Math.PI
     }
-
-
 }
